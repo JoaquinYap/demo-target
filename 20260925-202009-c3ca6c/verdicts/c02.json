@@ -1,0 +1,26 @@
+{
+  "candidate_id": "c02",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c02_tokens.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "duration_s": 4.82,
+    "output_tail": "lt = is_token_expired(aware)\n                 ^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c02_tokens.py:13: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nvalid_until = datetime.datetime(2026, 9, 26, 0, 32, 24, 185305, tzinfo=datetime.timezone.utc)\n\n    def is_token_expired(valid_until: datetime) -> bool:\n        \"\"\"Return True if the API token is no longer valid.\n    \n        Args:\n            valid_until: timezone-aware datetime of token expiry.\n        \"\"\"\n        # BUG: datetime.now() is naive; raises TypeError with aware valid_until\n>       return valid_until < datetime.now()\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: can't compare offset-naive and offset-aware datetimes\n\nsrc\\tokens.py:17: TypeError\n____________________ test_token_ttl_seconds_does_not_raise ____________________\n\n    def test_token_ttl_seconds_does_not_raise():\n        aware = datetime.now(timezone.utc) + timedelta(hours=1)\n        # Should return a positive TTL without raising TypeError\n>       result = token_ttl_seconds(aware)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c02_tokens.py:20: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nvalid_until = datetime.datetime(2026, 9, 26, 0, 32, 24, 818364, tzinfo=datetime.timezone.utc)\n\n    def token_ttl_seconds(valid_until: datetime) -> float:\n        \"\"\"Return seconds left before the token expires (negative if expired).\"\"\"\n        # BUG: same naive datetime mistake\n>       return (valid_until - datetime.now()).total_seconds()\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: can't subtract offset-naive and offset-aware datetimes\n\nsrc\\tokens.py:23: TypeError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c02_tokens.py::test_is_token_expired_does_not_raise\nFAILED tests/antibody/test_twin_c02_tokens.py::test_token_ttl_seconds_does_not_raise\n2 failed in 0.79s\n",
+    "recorded_at": "2026-09-25T23:32:25+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "duration_s": 2.44,
+    "output_tail": "..                                                                       [100%]\n2 passed in 0.08s\n",
+    "recorded_at": "2026-09-25T23:35:53+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace datetime.now() with datetime.now(timezone.utc) and add timezone to import"
+}

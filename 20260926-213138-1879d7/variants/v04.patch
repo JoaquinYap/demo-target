@@ -1,0 +1,15 @@
+diff --git a/src/events.py b/src/events.py
+new file mode 100644
+index 0000000..c5ba013
+--- /dev/null
++++ b/src/events.py
+@@ -0,0 +1,9 @@
++"""Event collector."""
++
++_DEFAULT_EVENTS = []
++
++
++def collect_events(event: str, events: list = _DEFAULT_EVENTS) -> list:
++    """Append event to the events list."""
++    events.append(event)
++    return events

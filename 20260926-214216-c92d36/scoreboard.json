@@ -1,0 +1,350 @@
+{
+  "run_id": "20260926-214216-c92d36",
+  "title": "Float equality compared with == instead of math.isclose(), causing false negatives due to floating-point precision.",
+  "repo": "demo-target/antibody-demo",
+  "root_cause": {
+    "title": "Float equality compared with == instead of math.isclose(), causing false negatives due to floating-point precision.",
+    "pattern": "A float value is compared using == (or !=) directly against another float or a float literal, rather than using math.isclose() or an absolute-tolerance check."
+  },
+  "original": {
+    "file": "src/pricing.py",
+    "line": 11
+  },
+  "twins": [
+    {
+      "id": "c01",
+      "file": "src/discounts.py",
+      "line": 10,
+      "status": "fixed",
+      "reasoning": "Arithmetic result of a subtraction of two floats is compared with == against a third float; rounding in the subtraction can produce a value that is not bit-for-bit equal to expected_saving."
+    },
+    {
+      "id": "c02",
+      "file": "src/discounts.py",
+      "line": 16,
+      "status": "fixed",
+      "reasoning": "A float is compared directly with the literal 0.0; any tiny residual from upstream arithmetic will make the comparison return False even for logically-zero prices."
+    },
+    {
+      "id": "c03",
+      "file": "src/discounts.py",
+      "line": 22,
+      "status": "fixed",
+      "reasoning": "Two float discount rates are compared with ==; the same IEEE-754 precision issue that existed in pricing.py applies here."
+    },
+    {
+      "id": "c04",
+      "file": "src/billing.py",
+      "line": 11,
+      "status": "fixed",
+      "reasoning": "Invoice total (likely accumulated from line items) compared with == against an expected float; classic accumulation error."
+    },
+    {
+      "id": "c05",
+      "file": "src/billing.py",
+      "line": 17,
+      "status": "fixed",
+      "reasoning": "Paid and owed amounts are floats that may have been computed via arithmetic; direct == comparison is unreliable."
+    },
+    {
+      "id": "c06",
+      "file": "src/billing.py",
+      "line": 23,
+      "status": "fixed",
+      "reasoning": "Tax values involve multiplication (rate * amount) which introduces floating-point error; == comparison will silently mis-classify correct tax computations."
+    }
+  ],
+  "rounds": [
+    {
+      "round": 0,
+      "label": "Before Antibody",
+      "score": 0.8333,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "syntax",
+          "description": "Use 'not (total != expected)' instead of == to compare two floats — logically equivalent but still relies on != for floats.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "relocation",
+          "description": "Introduce a brand-new module src/refunds.py with 'return refunded == original' — same mistake in a previously clean file.",
+          "status": "escaped",
+          "detected_by": []
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Store the arithmetic result in a local variable 'difference = paid - owed' then compare 'difference == 0.0' — the == is one step removed from the call site.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "api_alias",
+          "description": "Use 'abs(computed_tax - expected_tax) == 0' — looks like a tolerance check but uses == 0 with no epsilon, reproducing the same precision failure.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "syntax",
+          "description": "Compare a float to the integer literal 0 instead of 0.0: 'return price == 0' — same mistake, different literal type.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "indirection",
+          "description": "Introduce a private helper '_floats_equal(a, b): return a == b' and call it — the bug is hidden one call-level deeper.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "label": "Round 1",
+      "score": 1.0,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "syntax",
+          "description": "Use 'not (total != expected)' instead of == to compare two floats — logically equivalent but still relies on != for floats.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "relocation",
+          "description": "Introduce a brand-new module src/refunds.py with 'return refunded == original' — same mistake in a previously clean file.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Store the arithmetic result in a local variable 'difference = paid - owed' then compare 'difference == 0.0' — the == is one step removed from the call site.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "api_alias",
+          "description": "Use 'abs(computed_tax - expected_tax) == 0' — looks like a tolerance check but uses == 0 with no epsilon, reproducing the same precision failure.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "syntax",
+          "description": "Compare a float to the integer literal 0 instead of 0.0: 'return price == 0' — same mistake, different literal type.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "indirection",
+          "description": "Introduce a private helper '_floats_equal(a, b): return a == b' and call it — the bug is hidden one call-level deeper.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "label": "Round 2",
+      "score": 1.0,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "syntax",
+          "description": "Use 'not (total != expected)' instead of == to compare two floats — logically equivalent but still relies on != for floats.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "relocation",
+          "description": "Introduce a brand-new module src/refunds.py with 'return refunded == original' — same mistake in a previously clean file.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Store the arithmetic result in a local variable 'difference = paid - owed' then compare 'difference == 0.0' — the == is one step removed from the call site.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "api_alias",
+          "description": "Use 'abs(computed_tax - expected_tax) == 0' — looks like a tolerance check but uses == 0 with no epsilon, reproducing the same precision failure.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "syntax",
+          "description": "Compare a float to the integer literal 0 instead of 0.0: 'return price == 0' — same mistake, different literal type.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "indirection",
+          "description": "Introduce a private helper '_floats_equal(a, b): return a == b' and call it — the bug is hidden one call-level deeper.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "t_min": 0.0,
+      "kind": "run_started",
+      "label": "Run started from fix_commit 7a3e9e6"
+    },
+    {
+      "t_min": 11.65,
+      "kind": "twin_confirmed",
+      "label": "c01 confirmed with a failing test"
+    },
+    {
+      "t_min": 11.97,
+      "kind": "twin_confirmed",
+      "label": "c02 confirmed with a failing test"
+    },
+    {
+      "t_min": 12.47,
+      "kind": "twin_confirmed",
+      "label": "c03 confirmed with a failing test"
+    },
+    {
+      "t_min": 13.92,
+      "kind": "twin_confirmed",
+      "label": "c04 confirmed with a failing test"
+    },
+    {
+      "t_min": 14.27,
+      "kind": "twin_confirmed",
+      "label": "c05 confirmed with a failing test"
+    },
+    {
+      "t_min": 14.37,
+      "kind": "twin_confirmed",
+      "label": "c06 confirmed with a failing test"
+    },
+    {
+      "t_min": 80.57,
+      "kind": "twin_fixed",
+      "label": "c01 fixed, test is green"
+    },
+    {
+      "t_min": 80.8,
+      "kind": "twin_fixed",
+      "label": "c02 fixed, test is green"
+    },
+    {
+      "t_min": 81.02,
+      "kind": "twin_fixed",
+      "label": "c03 fixed, test is green"
+    },
+    {
+      "t_min": 81.2,
+      "kind": "twin_fixed",
+      "label": "c04 fixed, test is green"
+    },
+    {
+      "t_min": 81.4,
+      "kind": "twin_fixed",
+      "label": "c05 fixed, test is green"
+    },
+    {
+      "t_min": 81.62,
+      "kind": "twin_fixed",
+      "label": "c06 fixed, test is green"
+    },
+    {
+      "t_min": 88.0,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 0% (0/0)"
+    },
+    {
+      "t_min": 91.08,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 83% (5/6), escaped: v02"
+    },
+    {
+      "t_min": 94.55,
+      "kind": "vaccine_round",
+      "label": "Round 1: immunity 83% (5/6), escaped: v02"
+    },
+    {
+      "t_min": 101.25,
+      "kind": "vaccine_round",
+      "label": "Round 1: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 104.53,
+      "kind": "vaccine_round",
+      "label": "Round 2: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 104.87,
+      "kind": "antibody_created",
+      "label": "Antibody 003-float-equality-without-tolerance created"
+    }
+  ],
+  "baseline": null,
+  "duration_minutes": 104.87
+}

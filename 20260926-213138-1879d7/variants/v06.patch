@@ -1,0 +1,13 @@
+diff --git a/src/tags.py b/src/tags.py
+new file mode 100644
+index 0000000..3a24d6c
+--- /dev/null
++++ b/src/tags.py
+@@ -0,0 +1,7 @@
++"""Tag registry."""
++
++
++def register_tag(tag: str, registry: set = set()) -> set:
++    """Add a tag to the registry set."""
++    registry.add(tag)
++    return registry

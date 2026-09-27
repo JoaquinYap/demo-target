@@ -1,0 +1,47 @@
+{
+  "run_id": "20260925-202009-c3ca6c",
+  "variants": [
+    {
+      "id": "v01",
+      "kind": "syntax",
+      "description": "Reversed operands: datetime.now() > deadline instead of deadline < datetime.now(timezone.utc)",
+      "target_file": "src/tasks.py",
+      "patch": "variants/v01.patch"
+    },
+    {
+      "id": "v02",
+      "kind": "api_alias",
+      "description": "datetime.utcnow() used instead of datetime.now() — also naive, same TypeError with aware operand",
+      "target_file": "src/subscriptions.py",
+      "patch": "variants/v02.patch"
+    },
+    {
+      "id": "v03",
+      "kind": "indirection",
+      "description": "Naive datetime.now() result stored in a local variable 'now' before the comparison",
+      "target_file": "src/tokens.py",
+      "patch": "variants/v03.patch"
+    },
+    {
+      "id": "v04",
+      "kind": "relocation",
+      "description": "Same mistake introduced in a brand-new module src/reminders.py",
+      "target_file": "src/reminders.py",
+      "patch": "variants/v04.patch"
+    },
+    {
+      "id": "v05",
+      "kind": "api_alias",
+      "description": "datetime.utcnow() used in arithmetic subtraction (sessions.py session_age_seconds)",
+      "target_file": "src/sessions.py",
+      "patch": "variants/v05.patch"
+    },
+    {
+      "id": "v06",
+      "kind": "indirection",
+      "description": "Naive datetime.now() wrapped in a private helper _get_now() then called in arithmetic",
+      "target_file": "src/tasks.py",
+      "patch": "variants/v06.patch"
+    }
+  ]
+}

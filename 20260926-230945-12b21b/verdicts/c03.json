@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c03",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c03_p99_zero_baseline.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 7.69,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n______________________ test_p99_normalized_zero_baseline ______________________\n\n    def test_p99_normalized_zero_baseline():\n        \"\"\"p99_normalized() must not raise ZeroDivisionError when baseline=0.\"\"\"\n>       result = p99_normalized(50.0, 0.0)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c03_p99_zero_baseline.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\np99 = 50.0, baseline = 0.0\n\n    def p99_normalized(p99: float, baseline: float) -> float:\n        \"\"\"Return p99 latency normalized against the baseline.\"\"\"\n        # BUG: if baseline == 0 \\u2192 ZeroDivisionError\n>       return p99 / baseline\n               ^^^^^^^^^^^^^^\nE       ZeroDivisionError: float division by zero\n\nsrc\\metrics.py:22: ZeroDivisionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c03_p99_zero_baseline.py::test_p99_normalized_zero_baseline\n1 failed in 1.48s\n",
+    "recorded_at": "2026-09-27T02:11:11+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 6.57,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.26s\n",
+    "recorded_at": "2026-09-27T02:12:56+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Guard baseline==0, return 0.0"
+}

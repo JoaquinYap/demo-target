@@ -1,0 +1,99 @@
+{
+  "run_id": "20260926-213138-1879d7",
+  "created_at": "2026-09-27T00:31:38+00:00",
+  "source": {
+    "type": "fix_commit",
+    "ref": "51fac9e",
+    "fix_commit": "51fac9ef3b43bd335824ab7d2af4a6af0432f1da",
+    "parent_commit": "30c6eb86d181c34d219c1dc649fc42972fce943e",
+    "issue": null
+  },
+  "baseline": null,
+  "events": [
+    {
+      "at": "2026-09-27T00:31:38+00:00",
+      "kind": "run_started",
+      "label": "Run started from fix_commit 51fac9e"
+    },
+    {
+      "at": "2026-09-27T00:37:16+00:00",
+      "kind": "twin_confirmed",
+      "label": "c01 confirmed with a failing test"
+    },
+    {
+      "at": "2026-09-27T00:37:48+00:00",
+      "kind": "twin_confirmed",
+      "label": "c02 confirmed with a failing test"
+    },
+    {
+      "at": "2026-09-27T00:38:17+00:00",
+      "kind": "twin_confirmed",
+      "label": "c03 confirmed with a failing test"
+    },
+    {
+      "at": "2026-09-27T00:38:32+00:00",
+      "kind": "twin_confirmed",
+      "label": "c04 confirmed with a failing test"
+    },
+    {
+      "at": "2026-09-27T00:39:36+00:00",
+      "kind": "twin_confirmed",
+      "label": "c05 confirmed with a failing test"
+    },
+    {
+      "at": "2026-09-27T00:41:09+00:00",
+      "kind": "twin_fixed",
+      "label": "c01 fixed, test is green"
+    },
+    {
+      "at": "2026-09-27T00:41:34+00:00",
+      "kind": "twin_fixed",
+      "label": "c02 fixed, test is green"
+    },
+    {
+      "at": "2026-09-27T00:42:18+00:00",
+      "kind": "twin_fixed",
+      "label": "c03 fixed, test is green"
+    },
+    {
+      "at": "2026-09-27T00:47:24+00:00",
+      "kind": "twin_fixed",
+      "label": "c04 fixed, test is green"
+    },
+    {
+      "at": "2026-09-27T00:49:34+00:00",
+      "kind": "twin_fixed",
+      "label": "c05 fixed, test is green"
+    },
+    {
+      "at": "2026-09-27T00:58:10+00:00",
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 0% (0/0)"
+    },
+    {
+      "at": "2026-09-27T01:00:51+00:00",
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 0% (0/0)"
+    },
+    {
+      "at": "2026-09-27T01:03:19+00:00",
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 50% (3/6), escaped: v02, v04, v06"
+    },
+    {
+      "at": "2026-09-27T01:05:40+00:00",
+      "kind": "vaccine_round",
+      "label": "Round 1: immunity 67% (4/6), escaped: v04, v06"
+    },
+    {
+      "at": "2026-09-27T01:07:35+00:00",
+      "kind": "vaccine_round",
+      "label": "Round 2: immunity 100% (6/6)"
+    },
+    {
+      "at": "2026-09-27T02:02:40+00:00",
+      "kind": "antibody_created",
+      "label": "Antibody 002-mutable-default-argument created"
+    }
+  ]
+}

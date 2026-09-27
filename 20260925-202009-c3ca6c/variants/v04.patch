@@ -1,0 +1,13 @@
+﻿diff --git a/src/reminders.py b/src/reminders.py
+new file mode 100644
+index 0000000..f7d60d7
+--- /dev/null
++++ b/src/reminders.py
+@@ -0,0 +1,7 @@
++"""Reminder scheduling: due date checks."""
++from datetime import datetime
++
++
++def is_reminder_due(due_at: datetime) -> bool:
++    """Return True if the reminder is past due."""
++    return datetime.now() >= due_at

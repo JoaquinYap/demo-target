@@ -1,0 +1,27 @@
+{
+  "run_id": "20260926-214216-c92d36",
+  "source": {
+    "type": "fix_commit",
+    "ref": "7a3e9e6",
+    "fix_commit": "7a3e9e62e9ab1659c7cfc7d22e0699e9f5f04c13",
+    "parent_commit": "51fac9ef3b43bd335824ab7d2af4a6af0432f1da",
+    "issue": null
+  },
+  "root_cause": {
+    "title": "Float equality compared with == instead of math.isclose(), causing false negatives due to floating-point precision.",
+    "pattern": "A float value is compared using == (or !=) directly against another float or a float literal, rather than using math.isclose() or an absolute-tolerance check.",
+    "why_it_breaks": "Floating-point arithmetic accumulates rounding error, so two logically equal values (e.g. 0.1 + 0.2 and 0.3) are rarely bit-for-bit identical; == therefore returns False when it should return True (or vice-versa), producing silently wrong results in pricing, balance and threshold checks.",
+    "trigger_conditions": [
+      "A float is the result of arithmetic (addition, subtraction, multiplication, division) and is then compared with ==",
+      "A float is compared with the literal 0.0 or any other float constant without a tolerance",
+      "The function is used in a financial, measurement or threshold context where small residuals matter"
+    ],
+    "fix_strategy": "Replace every `float == float` and `float != float` comparison with math.isclose(a, b, rel_tol=...) for relative comparisons and math.isclose(a, 0.0, abs_tol=...) when checking for zero.",
+    "language": "python"
+  },
+  "original_instance": {
+    "file": "src/pricing.py",
+    "line": 11,
+    "snippet": "return amount == price"
+  }
+}

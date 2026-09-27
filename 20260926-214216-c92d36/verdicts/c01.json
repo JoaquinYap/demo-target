@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c01",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c01_discount_applied.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 4.19,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________________ test_discount_applied_float_equality _____________________\n\n    def test_discount_applied_float_equality():\n        # 1.0 - 0.9 in IEEE-754 is 0.09999999999999998, not 0.1\n        original = 1.0\n        discounted = 0.9\n        expected_saving = 0.1\n        # The saving IS logically correct; the function must return True\n>       assert discount_applied(original, discounted, expected_saving), (\n            \"discount_applied returned False due to float == precision error\"\n        )\nE       AssertionError: discount_applied returned False due to float == precision error\nE       assert False\nE        +  where False = discount_applied(1.0, 0.9, 0.1)\n\ntests\\antibody\\test_twin_c01_discount_applied.py:11: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c01_discount_applied.py::test_discount_applied_float_equality\n1 failed in 0.60s\n",
+    "recorded_at": "2026-09-27T00:53:55+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 3.78,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.16s\n",
+    "recorded_at": "2026-09-27T02:02:50+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace (original - discounted) == expected_saving with math.isclose()"
+}

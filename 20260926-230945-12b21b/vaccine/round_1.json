@@ -1,0 +1,59 @@
+{
+  "run_id": "20260926-230945-12b21b",
+  "round": 1,
+  "rule_file": ".antibody/runs/20260926-230945-12b21b/rule.v1.yml",
+  "rule_sha256": "9f666d030a45d6b34748ef32e3decc631b001e07c2321c2b8ae0d0e16a7bf6f3",
+  "tests_target": [],
+  "results": [
+    {
+      "variant_id": "v01",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "rule did not match; tests failed"
+    },
+    {
+      "variant_id": "v02",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "rule did not match; tests failed"
+    },
+    {
+      "variant_id": "v03",
+      "status": "invalid",
+      "detected_by": [],
+      "detail": "patch does not apply: error: No valid patches in input (allow with \"--allow-empty\")"
+    },
+    {
+      "variant_id": "v04",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "rule did not match; tests failed"
+    },
+    {
+      "variant_id": "v05",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "rule did not match; tests failed"
+    },
+    {
+      "variant_id": "v06",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "rule did not match; tests failed"
+    }
+  ],
+  "valid": 5,
+  "detected": 5,
+  "score": 1.0,
+  "recorded_at": "2026-09-27T02:34:38+00:00"
+}

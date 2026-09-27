@@ -1,0 +1,26 @@
+{
+  "run_id": "20260926-230520-5223bf",
+  "source": {
+    "type": "fix_commit",
+    "ref": "fe16d2d",
+    "fix_commit": "fe16d2d3d82784aad86164658a687a73571cfd79",
+    "parent_commit": "681fefdbfaad2fe8184352031baefe18c44145dc",
+    "issue": null
+  },
+  "root_cause": {
+    "title": "A numeric value is divided by a variable that can be zero without a prior zero-guard, raising ZeroDivisionError at runtime.",
+    "pattern": "Division by a variable denominator with no zero-check before the `/` or `//` operator.",
+    "why_it_breaks": "When the denominator is zero Python raises ZeroDivisionError, crashing the caller. The caller has no opportunity to distinguish 'no data' from an error unless the function guards first.",
+    "trigger_conditions": [
+      "The denominator argument equals 0",
+      "An empty collection or dataset is passed (e.g. zero users, zero requests, zero items)"
+    ],
+    "fix_strategy": "Return a safe sentinel value (0.0 or 0) when the denominator is zero before executing the division.",
+    "language": "python"
+  },
+  "original_instance": {
+    "file": "src/analytics.py",
+    "line": 8,
+    "snippet": "return converted / total"
+  }
+}

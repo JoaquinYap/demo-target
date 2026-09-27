@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c05",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c05_ratio_zero_denominator.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 5.66,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________________________ test_ratio_zero_denominator _________________________\n\n    def test_ratio_zero_denominator():\n        \"\"\"ratio() must not raise ZeroDivisionError when denominator=0.\"\"\"\n>       result = ratio(5.0, 0.0)\n                 ^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c05_ratio_zero_denominator.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nnumerator = 5.0, denominator = 0.0\n\n    def ratio(numerator: float, denominator: float) -> float:\n        \"\"\"Return numerator divided by denominator.\"\"\"\n        # BUG: no zero guard\n>       return numerator / denominator\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: float division by zero\n\nsrc\\statistics_helpers.py:16: ZeroDivisionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c05_ratio_zero_denominator.py::test_ratio_zero_denominator\n1 failed in 0.81s\n",
+    "recorded_at": "2026-09-27T02:11:35+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 7.06,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.29s\n",
+    "recorded_at": "2026-09-27T02:13:29+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Guard denominator==0, return 0.0"
+}

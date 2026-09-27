@@ -1,0 +1,46 @@
+{
+  "run_id": "20260926-213138-1879d7",
+  "search_notes": "Searched all Python files for 'def <name>(...param: <type> = [] or {})' patterns. Found two files outside the fixed module — src/queue_manager.py and src/cache.py — each containing functions that use a mutable list or dict as a default argument and mutate it in the body.",
+  "candidates": [
+    {
+      "id": "c01",
+      "file": "src/queue_manager.py",
+      "line": 7,
+      "snippet": "def enqueue(job: str, queue: list = []) -> list:",
+      "reasoning": "The default list is shared across all calls; queue.append(job) on line 10 mutates it, so successive calls without an explicit argument accumulate jobs from prior calls.",
+      "confidence": "high"
+    },
+    {
+      "id": "c02",
+      "file": "src/queue_manager.py",
+      "line": 14,
+      "snippet": "def batch_jobs(job: str, batch: list = []) -> list:",
+      "reasoning": "Same pattern as c01 in the same file: batch.append(job) on line 17 mutates the shared default list on every call.",
+      "confidence": "high"
+    },
+    {
+      "id": "c03",
+      "file": "src/cache.py",
+      "line": 7,
+      "snippet": "def cache_result(key: str, store: dict = {}) -> dict:",
+      "reasoning": "Mutable dict default — store[key] = True on line 10 adds to the same dict object on every call that omits the argument.",
+      "confidence": "high"
+    },
+    {
+      "id": "c04",
+      "file": "src/cache.py",
+      "line": 14,
+      "snippet": "def push_to_cache(value: str, cache: list = []) -> list:",
+      "reasoning": "Mutable list default — cache.append(value) on line 17 mutates the shared object, leaking state between calls.",
+      "confidence": "high"
+    },
+    {
+      "id": "c05",
+      "file": "src/cache.py",
+      "line": 21,
+      "snippet": "def register_key(key: str, seen: list = []) -> bool:",
+      "reasoning": "Mutable list default — seen.append(key) on line 25 persists across calls, so a key seen in a previous call is incorrectly reported as already-seen in a fresh logical context.",
+      "confidence": "high"
+    }
+  ]
+}

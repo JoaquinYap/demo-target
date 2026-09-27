@@ -1,0 +1,10 @@
+﻿diff --git a/src/sessions.py b/src/sessions.py
+index 0afc83d..8e5bf58 100644
+--- a/src/sessions.py
++++ b/src/sessions.py
+@@ -18,4 +18,4 @@ def is_session_expired(expires_at: datetime) -> bool:
+ 
+ def session_age_seconds(created_at: datetime) -> float:
+     """Return how many seconds ago this session was created."""
+-    return (datetime.now(timezone.utc) - created_at).total_seconds()
++    return (datetime.utcnow() - created_at).total_seconds()

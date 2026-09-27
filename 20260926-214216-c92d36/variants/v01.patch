@@ -1,0 +1,13 @@
+diff --git a/src/billing.py b/src/billing.py
+index cbf5b20..ae4298e 100644
+--- a/src/billing.py
++++ b/src/billing.py
+@@ -4,7 +4,7 @@ import math
+ 
+ def invoice_matches(total: float, expected: float) -> bool:
+     """Return True if the invoice total matches expected amount."""
+-    return math.isclose(total, expected, rel_tol=1e-9)
++    return not (total != expected)
+ 
+ 
+ def is_paid_in_full(paid: float, owed: float) -> bool:

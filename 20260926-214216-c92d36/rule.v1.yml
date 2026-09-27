@@ -1,0 +1,38 @@
+rules:
+  - id: float-equality-without-tolerance
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: $A == $B
+              - metavariable-type:
+                  metavariable: $A
+                  types: [float]
+          - patterns:
+              - pattern: $A != $B
+              - metavariable-type:
+                  metavariable: $A
+                  types: [float]
+          - patterns:
+              - pattern: $A == $B
+              - metavariable-type:
+                  metavariable: $B
+                  types: [float]
+          - patterns:
+              - pattern: $A != $B
+              - metavariable-type:
+                  metavariable: $B
+                  types: [float]
+    message: >
+      Float equality compared with == (or !=) instead of math.isclose().
+      Floating-point arithmetic accumulates rounding error so two logically
+      equal values are rarely bit-for-bit identical; == returns False when it
+      should return True (commit 7a3e9e6 fixed this in pricing.py; twins were
+      found in discounts.py and billing.py). Use math.isclose(a, b,
+      rel_tol=1e-9) for relative comparisons and math.isclose(a, 0.0,
+      abs_tol=1e-9) when checking for zero.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: correctness
+      antibody_run: "20260926-214216-c92d36"
+      fix_commit: "7a3e9e6"

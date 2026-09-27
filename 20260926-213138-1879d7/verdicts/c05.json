@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c05",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c05_register_key_shared_list.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 3.01,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____________ test_register_key_does_not_share_state_across_calls _____________\n\n    def test_register_key_does_not_share_state_across_calls():\n        \"\"\"A key registered in one logical context must not appear seen in a fresh context.\"\"\"\n        # First call: registers \"token-A\", returns False (not seen before)\n        register_key(\"token-A\")\n        # Second independent call with a different key should return False (never seen)\n        # If the default list is shared, \"token-A\" persists and a fresh call would\n        # see the previous registration. We verify the list is fresh by checking that\n        # re-registering in what should be an isolated call does not carry prior state.\n        result = register_key(\"token-A\")  # should be False in a fresh list\n>       assert result is False, (\n            f\"Expected False (fresh list) but got {result!r} � mutable default list is shared\"\n        )\nE       AssertionError: Expected False (fresh list) but got True � mutable default list is shared\nE       assert True is False\n\ntests\\antibody\\test_twin_c05_register_key_shared_list.py:17: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c05_register_key_shared_list.py::test_register_key_does_not_share_state_across_calls\n1 failed in 0.41s\n",
+    "recorded_at": "2026-09-27T00:39:36+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 5.97,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.11s\n",
+    "recorded_at": "2026-09-27T00:49:34+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace seen: list = [] with Optional[list] = None and initialise inside function"
+}

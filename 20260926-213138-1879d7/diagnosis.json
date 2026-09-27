@@ -1,0 +1,26 @@
+{
+  "run_id": "20260926-213138-1879d7",
+  "source": {
+    "type": "fix_commit",
+    "ref": "51fac9e",
+    "fix_commit": "51fac9ef3b43bd335824ab7d2af4a6af0432f1da",
+    "parent_commit": "30c6eb86d181c34d219c1dc649fc42972fce943e",
+    "issue": null
+  },
+  "root_cause": {
+    "title": "A mutable object (list or dict) is used as a function parameter default, causing it to be shared across all calls that omit the argument.",
+    "pattern": "def f(param: list = []) or def f(param: dict = {}) — mutable literal used as a default argument value so a single object is created once at function-definition time and mutated by every call that does not pass an explicit value.",
+    "why_it_breaks": "Python evaluates default argument expressions once when the def statement is executed, not on each call. Any call that relies on the default therefore mutates the same object, making state leak from one call to the next.",
+    "trigger_conditions": [
+      "The caller omits the argument on at least two successive calls",
+      "The function body mutates the default (append, extend, update, etc.)"
+    ],
+    "fix_strategy": "Replace the mutable default with None and, inside the function body, assign a fresh mutable object when the parameter is None.",
+    "language": "python"
+  },
+  "original_instance": {
+    "file": "src/notifications.py",
+    "line": 7,
+    "snippet": "def add_notification(message: str, recipients: list = []) -> list:"
+  }
+}

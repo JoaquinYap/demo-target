@@ -1,0 +1,13 @@
+diff --git a/src/statistics_helpers.py b/src/statistics_helpers.py
+index 5922f16..f5537d9 100644
+--- a/src/statistics_helpers.py
++++ b/src/statistics_helpers.py
+@@ -17,6 +17,5 @@ def ratio(numerator: float, denominator: float) -> float:
+ 
+ def weighted_average(scores: list, weights: list) -> float:
+     """Return weighted average given scores and weights."""
+-    if sum(weights) == 0:
+-        return 0.0
+-    return sum(s * w for s, w in zip(scores, weights)) / sum(weights)
++    total_weight = sum(weights)
++    return sum(s * w for s, w in zip(scores, weights)) / total_weight

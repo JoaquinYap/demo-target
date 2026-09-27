@@ -1,0 +1,59 @@
+{
+  "run_id": "20260926-214216-c92d36",
+  "round": 0,
+  "rule_file": null,
+  "rule_sha256": null,
+  "tests_target": [],
+  "results": [
+    {
+      "variant_id": "v01",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "tests failed"
+    },
+    {
+      "variant_id": "v02",
+      "status": "escaped",
+      "detected_by": [],
+      "detail": "tests passed"
+    },
+    {
+      "variant_id": "v03",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "tests failed"
+    },
+    {
+      "variant_id": "v04",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "tests failed"
+    },
+    {
+      "variant_id": "v05",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "tests failed"
+    },
+    {
+      "variant_id": "v06",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "tests failed"
+    }
+  ],
+  "valid": 6,
+  "detected": 5,
+  "score": 0.8333,
+  "recorded_at": "2026-09-27T02:13:21+00:00"
+}

@@ -1,0 +1,47 @@
+rules:
+  - id: mutable-default-argument
+    pattern-either:
+      - patterns:
+          - pattern: "def $F(..., $P: $T = [], ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P: $T = {}, ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P: $T = set(), ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P: $T = list(), ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P: $T = dict(), ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P = [], ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P = {}, ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P = set(), ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P = list(), ...): ..."
+      - patterns:
+          - pattern: "def $F(..., $P = dict(), ...): ..."
+      - patterns:
+          - pattern: |
+              $DEFAULT = []
+              ...
+              def $F(..., $P = $DEFAULT, ...): ...
+      - patterns:
+          - pattern: |
+              $DEFAULT = {}
+              ...
+              def $F(..., $P = $DEFAULT, ...): ...
+      - patterns:
+          - pattern: |
+              $DEFAULT = set()
+              ...
+              def $F(..., $P = $DEFAULT, ...): ...
+    message: >
+      Mutable default argument '$P' in '$F': the list/dict/set is created once at
+      definition time and shared across every call that omits the argument.
+      This exact mistake caused silent state bleed across independent calls
+      (fixed in 51fac9e, 5 hidden twins confirmed in queue_manager and cache modules).
+      Use None as the default and initialise inside the body:
+      'if $P is None: $P = []'. History: .antibody/antibodies/mutable-default-argument/history.md
+    languages: [python]
+    severity: ERROR

@@ -1,0 +1,17 @@
+﻿diff --git a/src/tasks.py b/src/tasks.py
+index ac72777..2908331 100644
+--- a/src/tasks.py
++++ b/src/tasks.py
+@@ -20,7 +20,11 @@ def seconds_until_deadline(deadline: datetime) -> float:
+     return (deadline - datetime.now(timezone.utc)).total_seconds()
+ 
+ 
++def _get_now():
++    return datetime.now()
++
++
+ def is_overdue(deadline: datetime, grace_seconds: int = 0) -> bool:
+     """Return True if the deadline passed more than grace_seconds ago."""
+-    elapsed = (datetime.now(timezone.utc) - deadline).total_seconds()
++    elapsed = (_get_now() - deadline).total_seconds()
+     return elapsed > grace_seconds

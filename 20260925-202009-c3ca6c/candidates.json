@@ -1,0 +1,30 @@
+{
+  "run_id": "20260925-202009-c3ca6c",
+  "search_notes": "Searched all .py files for datetime.now() without timezone argument and datetime.utcnow(); found three files (subscriptions.py, tokens.py, sessions.py) each explicitly annotated as carrying the same bug, all passing aware datetimes to naive datetime.now() in comparisons or arithmetic. The already-fixed src/tasks.py and properly-written tests/ hits were excluded.",
+  "candidates": [
+    {
+      "id": "c01",
+      "file": "src/subscriptions.py",
+      "line": 17,
+      "snippet": "return datetime.now() < renews_at",
+      "reasoning": "renews_at is documented as timezone-aware; datetime.now() is naive, so both the comparison on line 17 and the subtraction on line 23 raise TypeError under the same conditions as the original bug.",
+      "confidence": "high"
+    },
+    {
+      "id": "c02",
+      "file": "src/tokens.py",
+      "line": 17,
+      "snippet": "return valid_until < datetime.now()",
+      "reasoning": "valid_until is documented as timezone-aware; datetime.now() on lines 17 and 23 is naive, identical mistake with reversed operand order on line 17.",
+      "confidence": "high"
+    },
+    {
+      "id": "c03",
+      "file": "src/sessions.py",
+      "line": 17,
+      "snippet": "return expires_at < datetime.now()",
+      "reasoning": "expires_at and created_at are documented as timezone-aware; datetime.now() on lines 17 and 23 is naive, same comparison and arithmetic mistake.",
+      "confidence": "high"
+    }
+  ]
+}

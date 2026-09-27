@@ -1,0 +1,15 @@
+rules:
+  - id: mutable-default-argument
+    patterns:
+      - pattern-either:
+          - pattern: "def $F(..., $P: $T = [], ...): ..."
+          - pattern: "def $F(..., $P: $T = {}, ...): ..."
+          - pattern: "def $F(..., $P = [], ...): ..."
+          - pattern: "def $F(..., $P = {}, ...): ..."
+    message: >
+      Mutable default argument '$P' in '$F' is shared across all calls that omit it.
+      Every call without an explicit argument mutates the same object, leaking state
+      between calls (see fix commit 51fac9e). Use 'None' as the default and initialise
+      inside the function body: 'if $P is None: $P = []'.
+    languages: [python]
+    severity: ERROR

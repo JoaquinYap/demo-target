@@ -1,0 +1,26 @@
+{
+  "candidate_id": "c01",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c01_subscriptions.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "duration_s": 2.89,
+    "output_tail": "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c01_subscriptions.py:13: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nrenews_at = datetime.datetime(2026, 10, 25, 23, 32, 5, 491565, tzinfo=datetime.timezone.utc)\n\n    def is_subscription_active(renews_at: datetime) -> bool:\n        \"\"\"Return True if the subscription has not yet expired.\n    \n        Args:\n            renews_at: timezone-aware datetime of the next renewal.\n        \"\"\"\n        # BUG: datetime.now() is naive; raises TypeError with aware renews_at\n>       return datetime.now() < renews_at\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: can't compare offset-naive and offset-aware datetimes\n\nsrc\\subscriptions.py:17: TypeError\n___________________ test_days_until_renewal_does_not_raise ____________________\n\n    def test_days_until_renewal_does_not_raise():\n        aware = datetime.now(timezone.utc) + timedelta(days=30)\n        # Should return a positive number without raising TypeError\n>       result = days_until_renewal(aware)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c01_subscriptions.py:20: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nrenews_at = datetime.datetime(2026, 10, 25, 23, 32, 5, 857686, tzinfo=datetime.timezone.utc)\n\n    def days_until_renewal(renews_at: datetime) -> float:\n        \"\"\"Return days remaining until the next renewal (negative if lapsed).\"\"\"\n        # BUG: same naive datetime mistake\n>       return (renews_at - datetime.now()).days\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: can't subtract offset-naive and offset-aware datetimes\n\nsrc\\subscriptions.py:23: TypeError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c01_subscriptions.py::test_is_subscription_active_does_not_raise\nFAILED tests/antibody/test_twin_c01_subscriptions.py::test_days_until_renewal_does_not_raise\n2 failed in 0.47s\n",
+    "recorded_at": "2026-09-25T23:32:06+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "duration_s": 2.5,
+    "output_tail": "..                                                                       [100%]\n2 passed in 0.07s\n",
+    "recorded_at": "2026-09-25T23:35:40+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace datetime.now() with datetime.now(timezone.utc) and add timezone to import"
+}

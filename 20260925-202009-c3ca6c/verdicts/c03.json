@@ -1,0 +1,26 @@
+{
+  "candidate_id": "c03",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c03_sessions.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "duration_s": 2.79,
+    "output_tail": "_expired(aware)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c03_sessions.py:13: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nexpires_at = datetime.datetime(2026, 9, 26, 0, 2, 43, 441484, tzinfo=datetime.timezone.utc)\n\n    def is_session_expired(expires_at: datetime) -> bool:\n        \"\"\"Return True when the user session has expired.\n    \n        Args:\n            expires_at: timezone-aware datetime when the session expires.\n        \"\"\"\n        # BUG: datetime.now() is naive; raises TypeError with aware expires_at\n>       return expires_at < datetime.now()\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: can't compare offset-naive and offset-aware datetimes\n\nsrc\\sessions.py:17: TypeError\n___________________ test_session_age_seconds_does_not_raise ___________________\n\n    def test_session_age_seconds_does_not_raise():\n        aware = datetime.now(timezone.utc) - timedelta(minutes=5)\n        # Should return a positive age without raising TypeError\n>       result = session_age_seconds(aware)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c03_sessions.py:20: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\ncreated_at = datetime.datetime(2026, 9, 25, 23, 27, 43, 849268, tzinfo=datetime.timezone.utc)\n\n    def session_age_seconds(created_at: datetime) -> float:\n        \"\"\"Return how many seconds ago this session was created.\"\"\"\n        # BUG: same naive datetime mistake\n>       return (datetime.now() - created_at).total_seconds()\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: can't subtract offset-naive and offset-aware datetimes\n\nsrc\\sessions.py:23: TypeError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c03_sessions.py::test_is_session_expired_does_not_raise\nFAILED tests/antibody/test_twin_c03_sessions.py::test_session_age_seconds_does_not_raise\n2 failed in 0.51s\n",
+    "recorded_at": "2026-09-25T23:32:44+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "duration_s": 1.74,
+    "output_tail": "..                                                                       [100%]\n2 passed in 0.06s\n",
+    "recorded_at": "2026-09-25T23:36:08+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace datetime.now() with datetime.now(timezone.utc) and add timezone to import"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c01",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c01_enqueue_shared_list.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 5.79,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_enqueue_does_not_share_state_across_calls ________________\n\n    def test_enqueue_does_not_share_state_across_calls():\n        \"\"\"Two independent calls without explicit queue must not see each other's jobs.\"\"\"\n        result1 = enqueue(\"job-A\")\n        result2 = enqueue(\"job-B\")\n        # If the default is shared, result2 will contain both \"job-A\" and \"job-B\"\n>       assert result2 == [\"job-B\"], (\n            f\"Expected ['job-B'] but got {result2!r} � mutable default list is shared\"\n        )\nE       AssertionError: Expected ['job-B'] but got ['job-A', 'job-B'] � mutable default list is shared\nE       assert ['job-A', 'job-B'] == ['job-B']\nE         \nE         At index 0 diff: 'job-A' != 'job-B'\nE         Left contains one more item: 'job-B'\nE         Use -v to get more diff\n\ntests\\antibody\\test_twin_c01_enqueue_shared_list.py:13: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c01_enqueue_shared_list.py::test_enqueue_does_not_share_state_across_calls\n1 failed in 0.55s\n",
+    "recorded_at": "2026-09-27T00:37:16+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 2.42,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.07s\n",
+    "recorded_at": "2026-09-27T00:41:09+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace queue: list = [] with Optional[list] = None and initialise inside function"
+}

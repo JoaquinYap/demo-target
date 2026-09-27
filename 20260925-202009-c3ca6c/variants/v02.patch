@@ -1,0 +1,13 @@
+diff --git a/src/subscriptions.py b/src/subscriptions.py
+index 269ee0b..c97f8b8 100644
+--- a/src/subscriptions.py
++++ b/src/subscriptions.py
+@@ -13,7 +13,7 @@ def is_subscription_active(renews_at: datetime) -> bool:
+     Args:
+         renews_at: timezone-aware datetime of the next renewal.
+     """
+-    return datetime.now(timezone.utc) < renews_at
++    return datetime.utcnow() < renews_at
+ 
+ 
+ def days_until_renewal(renews_at: datetime) -> float:

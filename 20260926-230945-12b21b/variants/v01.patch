@@ -1,0 +1,13 @@
+diff --git a/src/metrics.py b/src/metrics.py
+index a577b3f..f0f525a 100644
+--- a/src/metrics.py
++++ b/src/metrics.py
+@@ -3,8 +3,6 @@
+ 
+ def throughput(items_processed: int, time_seconds: float) -> float:
+     """Return items processed per second."""
+-    if time_seconds == 0:
+-        return 0.0
+     return items_processed / time_seconds
+ 
+ 

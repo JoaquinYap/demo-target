@@ -1,0 +1,13 @@
+diff --git a/src/discounts.py b/src/discounts.py
+index b88b59e..c7e1c49 100644
+--- a/src/discounts.py
++++ b/src/discounts.py
+@@ -9,7 +9,7 @@ def discount_applied(original: float, discounted: float, expected_saving: float)
+ 
+ def is_free(price: float) -> bool:
+     """Return True if the item is free (price == 0)."""
+-    return math.isclose(price, 0.0, abs_tol=1e-9)
++    return price == 0
+ 
+ 
+ def rates_match(rate_a: float, rate_b: float) -> bool:

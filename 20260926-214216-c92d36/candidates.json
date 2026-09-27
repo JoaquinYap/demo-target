@@ -1,0 +1,54 @@
+{
+  "run_id": "20260926-214216-c92d36",
+  "search_notes": "Searched all Python files in src/ for float == / != patterns and float literal comparisons; found 6 instances across discounts.py and billing.py; analytics.py, statistics_helpers.py and metrics.py were ruled out as they carry a distinct division-by-zero bug; subscriptions.py and tokens.py carry a datetime-naive/aware bug unrelated to this diagnosis.",
+  "candidates": [
+    {
+      "id": "c01",
+      "file": "src/discounts.py",
+      "line": 10,
+      "snippet": "return (original - discounted) == expected_saving",
+      "reasoning": "Arithmetic result of a subtraction of two floats is compared with == against a third float; rounding in the subtraction can produce a value that is not bit-for-bit equal to expected_saving.",
+      "confidence": "high"
+    },
+    {
+      "id": "c02",
+      "file": "src/discounts.py",
+      "line": 16,
+      "snippet": "return price == 0.0",
+      "reasoning": "A float is compared directly with the literal 0.0; any tiny residual from upstream arithmetic will make the comparison return False even for logically-zero prices.",
+      "confidence": "high"
+    },
+    {
+      "id": "c03",
+      "file": "src/discounts.py",
+      "line": 22,
+      "snippet": "return rate_a == rate_b",
+      "reasoning": "Two float discount rates are compared with ==; the same IEEE-754 precision issue that existed in pricing.py applies here.",
+      "confidence": "high"
+    },
+    {
+      "id": "c04",
+      "file": "src/billing.py",
+      "line": 11,
+      "snippet": "return total == expected",
+      "reasoning": "Invoice total (likely accumulated from line items) compared with == against an expected float; classic accumulation error.",
+      "confidence": "high"
+    },
+    {
+      "id": "c05",
+      "file": "src/billing.py",
+      "line": 17,
+      "snippet": "return paid == owed",
+      "reasoning": "Paid and owed amounts are floats that may have been computed via arithmetic; direct == comparison is unreliable.",
+      "confidence": "high"
+    },
+    {
+      "id": "c06",
+      "file": "src/billing.py",
+      "line": 23,
+      "snippet": "return computed_tax == expected_tax",
+      "reasoning": "Tax values involve multiplication (rate * amount) which introduces floating-point error; == comparison will silently mis-classify correct tax computations.",
+      "confidence": "high"
+    }
+  ]
+}

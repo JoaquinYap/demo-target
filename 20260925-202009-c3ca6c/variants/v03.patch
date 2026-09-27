@@ -1,0 +1,14 @@
+diff --git a/src/tokens.py b/src/tokens.py
+index f5007eb..ce75246 100644
+--- a/src/tokens.py
++++ b/src/tokens.py
+@@ -13,7 +13,8 @@ def is_token_expired(valid_until: datetime) -> bool:
+     Args:
+         valid_until: timezone-aware datetime of token expiry.
+     """
+-    return valid_until < datetime.now(timezone.utc)
++    now = datetime.now()
++    return valid_until < now
+ 
+ 
+ def token_ttl_seconds(valid_until: datetime) -> float:

@@ -1,0 +1,16 @@
+rules:
+  - id: naive-datetime-now-mixed-with-aware
+    pattern-either:
+      - pattern: datetime.now()
+      - pattern: datetime.utcnow()
+    message: >
+      datetime.now() and datetime.utcnow() both return a naive datetime (no
+      tzinfo). If the other operand carries timezone info the comparison or
+      arithmetic will raise TypeError at runtime. Fix: datetime.now(timezone.utc).
+      This mistake was found in src/tasks.py, src/subscriptions.py, src/tokens.py
+      and src/sessions.py and fixed in commit c056747.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: correctness
+      antibody_run: 20260925-202009-c3ca6c

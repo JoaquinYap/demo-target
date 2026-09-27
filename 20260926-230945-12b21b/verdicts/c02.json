@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c02",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c02_hit_ratio_empty_cache.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 7.58,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________________________ test_hit_ratio_empty_cache __________________________\n\n    def test_hit_ratio_empty_cache():\n        \"\"\"hit_ratio() must not raise ZeroDivisionError when hits+misses=0.\"\"\"\n>       result = hit_ratio(0, 0)\n                 ^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c02_hit_ratio_empty_cache.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nhits = 0, misses = 0\n\n    def hit_ratio(hits: int, misses: int) -> float:\n        \"\"\"Return cache hit ratio.\"\"\"\n        # BUG: if hits + misses == 0 \\u2192 ZeroDivisionError\n>       return hits / (hits + misses)\n               ^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nsrc\\metrics.py:16: ZeroDivisionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c02_hit_ratio_empty_cache.py::test_hit_ratio_empty_cache\n1 failed in 1.70s\n",
+    "recorded_at": "2026-09-27T02:11:11+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 6.03,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.28s\n",
+    "recorded_at": "2026-09-27T02:12:56+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Guard hits+misses==0, return 0.0"
+}

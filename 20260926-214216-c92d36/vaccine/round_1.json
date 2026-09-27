@@ -1,0 +1,66 @@
+{
+  "run_id": "20260926-214216-c92d36",
+  "round": 1,
+  "rule_file": ".antibody/runs/20260926-214216-c92d36/rule.v1.yml",
+  "rule_sha256": "8222b4dc4bd910c183d56bb74d01294052e280e7e387dca2759b0b05ee665f52",
+  "tests_target": [],
+  "results": [
+    {
+      "variant_id": "v01",
+      "status": "detected",
+      "detected_by": [
+        "rule",
+        "tests"
+      ],
+      "detail": "rule matched 1 time(s); tests failed"
+    },
+    {
+      "variant_id": "v02",
+      "status": "detected",
+      "detected_by": [
+        "rule",
+        "tests"
+      ],
+      "detail": "rule matched 1 time(s); tests failed"
+    },
+    {
+      "variant_id": "v03",
+      "status": "detected",
+      "detected_by": [
+        "rule",
+        "tests"
+      ],
+      "detail": "rule matched 1 time(s); tests failed"
+    },
+    {
+      "variant_id": "v04",
+      "status": "detected",
+      "detected_by": [
+        "tests"
+      ],
+      "detail": "rule did not match; tests failed"
+    },
+    {
+      "variant_id": "v05",
+      "status": "detected",
+      "detected_by": [
+        "rule",
+        "tests"
+      ],
+      "detail": "rule matched 1 time(s); tests failed"
+    },
+    {
+      "variant_id": "v06",
+      "status": "detected",
+      "detected_by": [
+        "rule",
+        "tests"
+      ],
+      "detail": "rule matched 1 time(s); tests failed"
+    }
+  ],
+  "valid": 6,
+  "detected": 6,
+  "score": 1.0,
+  "recorded_at": "2026-09-27T02:23:31+00:00"
+}

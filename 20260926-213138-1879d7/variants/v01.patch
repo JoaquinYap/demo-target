@@ -1,0 +1,16 @@
+diff --git a/src/queue_manager.py b/src/queue_manager.py
+index 278955a..c0d8733 100644
+--- a/src/queue_manager.py
++++ b/src/queue_manager.py
+@@ -2,10 +2,8 @@
+ from typing import Optional
+ 
+ 
+-def enqueue(job: str, queue: Optional[list] = None) -> list:
++def enqueue(job: str, queue=[]) -> list:
+     """Add a job to the processing queue."""
+-    if queue is None:
+-        queue = []
+     queue.append(job)
+     return queue
+ 

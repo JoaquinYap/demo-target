@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c04",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c04_mean_empty_list.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 5.1,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________________________ test_mean_empty_list _____________________________\n\n    def test_mean_empty_list():\n        \"\"\"mean() must not raise ZeroDivisionError on an empty list.\"\"\"\n>       result = mean([])\n                 ^^^^^^^^\n\ntests\\antibody\\test_twin_c04_mean_empty_list.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nvalues = []\n\n    def mean(values: list) -> float:\n        \"\"\"Return the arithmetic mean of a list of numbers.\"\"\"\n        # BUG: if values is empty, len(values) == 0 \\u2192 ZeroDivisionError\n>       return sum(values) / len(values)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nsrc\\statistics_helpers.py:10: ZeroDivisionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c04_mean_empty_list.py::test_mean_empty_list\n1 failed in 0.64s\n",
+    "recorded_at": "2026-09-27T02:11:35+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 7.21,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.26s\n",
+    "recorded_at": "2026-09-27T02:13:29+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Guard len(values)==0, return 0.0"
+}

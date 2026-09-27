@@ -1,0 +1,12 @@
+diff --git a/src/metrics.py b/src/metrics.py
+index a577b3f..92ac2a9 100644
+--- a/src/metrics.py
++++ b/src/metrics.py
+@@ -17,6 +17,6 @@ def hit_ratio(hits: int, misses: int) -> float:
+ 
+ def p99_normalized(p99: float, baseline: float) -> float:
+     """Return p99 latency normalized against the baseline."""
+-    if baseline == 0:
++    if baseline is None:
+         return 0.0
+     return p99 / baseline

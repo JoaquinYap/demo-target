@@ -1,0 +1,227 @@
+{
+  "run_id": "20260925-202009-c3ca6c",
+  "title": "datetime.now() without a timezone produces a naive datetime that cannot be compared to an aware datetime.",
+  "repo": "demo-target/master",
+  "root_cause": {
+    "title": "datetime.now() without a timezone produces a naive datetime that cannot be compared to an aware datetime.",
+    "pattern": "datetime.now() called without timezone argument when the other operand is an aware datetime, causing a TypeError at comparison or arithmetic."
+  },
+  "original": {
+    "file": "src/tasks.py",
+    "line": 15
+  },
+  "twins": [
+    {
+      "id": "c01",
+      "file": "src/subscriptions.py",
+      "line": 17,
+      "status": "fixed",
+      "reasoning": "renews_at is documented as timezone-aware; datetime.now() is naive, so both the comparison on line 17 and the subtraction on line 23 raise TypeError under the same conditions as the original bug."
+    },
+    {
+      "id": "c02",
+      "file": "src/tokens.py",
+      "line": 17,
+      "status": "fixed",
+      "reasoning": "valid_until is documented as timezone-aware; datetime.now() on lines 17 and 23 is naive, identical mistake with reversed operand order on line 17."
+    },
+    {
+      "id": "c03",
+      "file": "src/sessions.py",
+      "line": 17,
+      "status": "fixed",
+      "reasoning": "expires_at and created_at are documented as timezone-aware; datetime.now() on lines 17 and 23 is naive, same comparison and arithmetic mistake."
+    }
+  ],
+  "rounds": [
+    {
+      "round": 0,
+      "label": "Before Antibody",
+      "score": 0.8333,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "syntax",
+          "description": "Reversed operands: datetime.now() > deadline instead of deadline < datetime.now(timezone.utc)",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "api_alias",
+          "description": "datetime.utcnow() used instead of datetime.now() — also naive, same TypeError with aware operand",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Naive datetime.now() result stored in a local variable 'now' before the comparison",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "relocation",
+          "description": "Same mistake introduced in a brand-new module src/reminders.py",
+          "status": "escaped",
+          "detected_by": []
+        },
+        {
+          "id": "v05",
+          "kind": "api_alias",
+          "description": "datetime.utcnow() used in arithmetic subtraction (sessions.py session_age_seconds)",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "indirection",
+          "description": "Naive datetime.now() wrapped in a private helper _get_now() then called in arithmetic",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "label": "Round 1",
+      "score": 1.0,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "syntax",
+          "description": "Reversed operands: datetime.now() > deadline instead of deadline < datetime.now(timezone.utc)",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "api_alias",
+          "description": "datetime.utcnow() used instead of datetime.now() — also naive, same TypeError with aware operand",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Naive datetime.now() result stored in a local variable 'now' before the comparison",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "relocation",
+          "description": "Same mistake introduced in a brand-new module src/reminders.py",
+          "status": "detected",
+          "detected_by": [
+            "rule"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "api_alias",
+          "description": "datetime.utcnow() used in arithmetic subtraction (sessions.py session_age_seconds)",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "indirection",
+          "description": "Naive datetime.now() wrapped in a private helper _get_now() then called in arithmetic",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "t_min": 0.0,
+      "kind": "run_started",
+      "label": "Run started from fix_commit c056747"
+    },
+    {
+      "t_min": 11.95,
+      "kind": "twin_confirmed",
+      "label": "c01 confirmed with a failing test"
+    },
+    {
+      "t_min": 12.27,
+      "kind": "twin_confirmed",
+      "label": "c02 confirmed with a failing test"
+    },
+    {
+      "t_min": 12.58,
+      "kind": "twin_confirmed",
+      "label": "c03 confirmed with a failing test"
+    },
+    {
+      "t_min": 15.52,
+      "kind": "twin_fixed",
+      "label": "c01 fixed, test is green"
+    },
+    {
+      "t_min": 15.73,
+      "kind": "twin_fixed",
+      "label": "c02 fixed, test is green"
+    },
+    {
+      "t_min": 15.98,
+      "kind": "twin_fixed",
+      "label": "c03 fixed, test is green"
+    },
+    {
+      "t_min": 28.8,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 67% (2/3), escaped: v04"
+    },
+    {
+      "t_min": 33.23,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 83% (5/6), escaped: v04"
+    },
+    {
+      "t_min": 37.6,
+      "kind": "vaccine_round",
+      "label": "Round 1: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 43.68,
+      "kind": "vaccine_round",
+      "label": "Round 1: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 44.52,
+      "kind": "antibody_created",
+      "label": "Antibody 001-naive-vs-aware-datetime created"
+    }
+  ],
+  "baseline": null,
+  "duration_minutes": 44.52
+}

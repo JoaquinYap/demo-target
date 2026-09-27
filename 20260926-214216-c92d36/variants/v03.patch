@@ -1,0 +1,14 @@
+diff --git a/src/billing.py b/src/billing.py
+index cbf5b20..5214f10 100644
+--- a/src/billing.py
++++ b/src/billing.py
+@@ -9,7 +9,8 @@ def invoice_matches(total: float, expected: float) -> bool:
+ 
+ def is_paid_in_full(paid: float, owed: float) -> bool:
+     """Return True if the amount paid covers what is owed."""
+-    return math.isclose(paid, owed, rel_tol=1e-9)
++    difference = paid - owed
++    return difference == 0.0
+ 
+ 
+ def tax_is_correct(computed_tax: float, expected_tax: float) -> bool:

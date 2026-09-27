@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c02",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c02_is_free.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 4.47,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________________________ test_is_free_float_equality _________________________\n\n    def test_is_free_float_equality():\n        # 0.1 + 0.2 - 0.3 is not exactly 0.0 in IEEE-754 but is logically zero\n        price = 0.1 + 0.2 - 0.3\n>       assert is_free(price), (\n            \"is_free returned False for a logically-zero price due to float == 0.0\"\n        )\nE       AssertionError: is_free returned False for a logically-zero price due to float == 0.0\nE       assert False\nE        +  where False = is_free(5.551115123125783e-17)\n\ntests\\antibody\\test_twin_c02_is_free.py:8: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c02_is_free.py::test_is_free_float_equality\n1 failed in 0.61s\n",
+    "recorded_at": "2026-09-27T00:54:14+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 4.44,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.17s\n",
+    "recorded_at": "2026-09-27T02:03:04+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace price == 0.0 with math.isclose(price, 0.0, abs_tol=1e-9)"
+}

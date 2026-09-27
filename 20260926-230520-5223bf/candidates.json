@@ -1,0 +1,54 @@
+{
+  "run_id": "20260926-230520-5223bf",
+  "search_notes": "Searched all .py files under src/ for bare division operators without a preceding zero-guard. Hits in billing.py and discounts.py use math.isclose (no division) and were ruled out. All six remaining hits are in metrics.py and statistics_helpers.py, each with a comment confirming the same bug.",
+  "candidates": [
+    {
+      "id": "c01",
+      "file": "src/metrics.py",
+      "line": 10,
+      "snippet": "return items_processed / time_seconds",
+      "reasoning": "time_seconds can be 0 (e.g. a zero-length measurement window), identical pattern to the fixed analytics.py functions.",
+      "confidence": "high"
+    },
+    {
+      "id": "c02",
+      "file": "src/metrics.py",
+      "line": 16,
+      "snippet": "return hits / (hits + misses)",
+      "reasoning": "When both hits and misses are 0 (empty cache) the compound denominator is 0, raising ZeroDivisionError.",
+      "confidence": "high"
+    },
+    {
+      "id": "c03",
+      "file": "src/metrics.py",
+      "line": 22,
+      "snippet": "return p99 / baseline",
+      "reasoning": "baseline can be 0 (no baseline recorded yet), same unguarded division pattern.",
+      "confidence": "high"
+    },
+    {
+      "id": "c04",
+      "file": "src/statistics_helpers.py",
+      "line": 10,
+      "snippet": "return sum(values) / len(values)",
+      "reasoning": "An empty list makes len(values) == 0; sum([]) is 0 but the division still crashes.",
+      "confidence": "high"
+    },
+    {
+      "id": "c05",
+      "file": "src/statistics_helpers.py",
+      "line": 16,
+      "snippet": "return numerator / denominator",
+      "reasoning": "Caller controls denominator directly; no guard whatsoever, same pattern as the original bug.",
+      "confidence": "high"
+    },
+    {
+      "id": "c06",
+      "file": "src/statistics_helpers.py",
+      "line": 22,
+      "snippet": "return sum(s * w for s, w in zip(scores, weights)) / sum(weights)",
+      "reasoning": "If all weights are 0 the sum is 0, raising ZeroDivisionError; same unguarded compound denominator.",
+      "confidence": "high"
+    }
+  ]
+}

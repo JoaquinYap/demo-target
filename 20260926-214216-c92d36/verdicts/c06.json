@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c06",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c06_tax_is_correct.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 4.09,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____________________ test_tax_is_correct_float_equality ______________________\n\n    def test_tax_is_correct_float_equality():\n        # Tax: 7% of 99.99 => 0.07 * 99.99; expected from a separate calculation\n        rate = 0.07\n        amount = 99.99\n        computed_tax = rate * amount          # may have floating-point residual\n        expected_tax = 6.9993                 # same mathematical result, may differ in bits\n        # Force the residual: use a value that triggers the IEEE-754 mismatch\n        computed_tax2 = 0.1 * 0.7\n        expected_tax2 = 0.07\n>       assert tax_is_correct(computed_tax2, expected_tax2), (\n            \"tax_is_correct returned False due to float == precision error\"\n        )\nE       AssertionError: tax_is_correct returned False due to float == precision error\nE       assert False\nE        +  where False = tax_is_correct(0.06999999999999999, 0.07)\n\ntests\\antibody\\test_twin_c06_tax_is_correct.py:14: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c06_tax_is_correct.py::test_tax_is_correct_float_equality\n1 failed in 0.49s\n",
+    "recorded_at": "2026-09-27T00:56:38+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 4.33,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.07s\n",
+    "recorded_at": "2026-09-27T02:03:53+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace computed_tax == expected_tax with math.isclose(computed_tax, expected_tax, rel_tol=1e-9)"
+}

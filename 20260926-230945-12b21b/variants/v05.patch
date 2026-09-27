@@ -1,0 +1,15 @@
+diff --git a/src/statistics_helpers.py b/src/statistics_helpers.py
+index 5922f16..0871d85 100644
+--- a/src/statistics_helpers.py
++++ b/src/statistics_helpers.py
+@@ -3,9 +3,7 @@
+ 
+ def mean(values: list) -> float:
+     """Return the arithmetic mean of a list of numbers."""
+-    if len(values) == 0:
+-        return 0.0
+-    return sum(values) / len(values)
++    return sum(values) // len(values)
+ 
+ 
+ def ratio(numerator: float, denominator: float) -> float:

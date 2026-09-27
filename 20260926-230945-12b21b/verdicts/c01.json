@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c01",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c01_throughput_zero_time.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 5.14,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n__________________________ test_throughput_zero_time __________________________\n\n    def test_throughput_zero_time():\n        \"\"\"throughput() must not raise ZeroDivisionError when time_seconds=0.\"\"\"\n>       result = throughput(100, 0)\n                 ^^^^^^^^^^^^^^^^^^\n\ntests\\antibody\\test_twin_c01_throughput_zero_time.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nitems_processed = 100, time_seconds = 0\n\n    def throughput(items_processed: int, time_seconds: float) -> float:\n        \"\"\"Return items processed per second.\"\"\"\n        # BUG: if time_seconds == 0 \\u2192 ZeroDivisionError\n>       return items_processed / time_seconds\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nsrc\\metrics.py:10: ZeroDivisionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c01_throughput_zero_time.py::test_throughput_zero_time\n1 failed in 0.76s\n",
+    "recorded_at": "2026-09-27T02:10:42+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 5.11,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.16s\n",
+    "recorded_at": "2026-09-27T02:12:30+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Guard time_seconds==0, return 0.0"
+}

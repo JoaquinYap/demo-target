@@ -1,0 +1,47 @@
+{
+  "run_id": "20260926-230945-12b21b",
+  "variants": [
+    {
+      "id": "v01",
+      "kind": "syntax",
+      "description": "Zero-guard removed entirely; bare `items_processed / time_seconds` with no check.",
+      "target_file": "src/metrics.py",
+      "patch": "variants/v01.patch"
+    },
+    {
+      "id": "v02",
+      "kind": "indirection",
+      "description": "Denominator aliased into a local variable `d = denominator` before division; guard omitted.",
+      "target_file": "src/statistics_helpers.py",
+      "patch": "variants/v02.patch"
+    },
+    {
+      "id": "v03",
+      "kind": "relocation",
+      "description": "Same bare division in a new module src/reporting.py (`total_ms / request_count`).",
+      "target_file": "src/reporting.py",
+      "patch": "variants/v03.patch"
+    },
+    {
+      "id": "v04",
+      "kind": "indirection",
+      "description": "Compound denominator `sum(weights)` stored in `total_weight` then divided without guard.",
+      "target_file": "src/statistics_helpers.py",
+      "patch": "variants/v04.patch"
+    },
+    {
+      "id": "v05",
+      "kind": "api_alias",
+      "description": "Floor-division `//` used instead of `/`; same ZeroDivisionError, guard omitted.",
+      "target_file": "src/statistics_helpers.py",
+      "patch": "variants/v05.patch"
+    },
+    {
+      "id": "v06",
+      "kind": "syntax",
+      "description": "Guard checks `if baseline is None` instead of `if baseline == 0`; zero denominator still reaches the division.",
+      "target_file": "src/metrics.py",
+      "patch": "variants/v06.patch"
+    }
+  ]
+}

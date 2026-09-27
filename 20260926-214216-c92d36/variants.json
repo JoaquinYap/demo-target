@@ -1,0 +1,47 @@
+{
+  "run_id": "20260926-214216-c92d36",
+  "variants": [
+    {
+      "id": "v01",
+      "kind": "syntax",
+      "description": "Use 'not (total != expected)' instead of == to compare two floats — logically equivalent but still relies on != for floats.",
+      "target_file": "src/billing.py",
+      "patch": "variants/v01.patch"
+    },
+    {
+      "id": "v02",
+      "kind": "relocation",
+      "description": "Introduce a brand-new module src/refunds.py with 'return refunded == original' — same mistake in a previously clean file.",
+      "target_file": "src/refunds.py",
+      "patch": "variants/v02.patch"
+    },
+    {
+      "id": "v03",
+      "kind": "indirection",
+      "description": "Store the arithmetic result in a local variable 'difference = paid - owed' then compare 'difference == 0.0' — the == is one step removed from the call site.",
+      "target_file": "src/billing.py",
+      "patch": "variants/v03.patch"
+    },
+    {
+      "id": "v04",
+      "kind": "api_alias",
+      "description": "Use 'abs(computed_tax - expected_tax) == 0' — looks like a tolerance check but uses == 0 with no epsilon, reproducing the same precision failure.",
+      "target_file": "src/billing.py",
+      "patch": "variants/v04.patch"
+    },
+    {
+      "id": "v05",
+      "kind": "syntax",
+      "description": "Compare a float to the integer literal 0 instead of 0.0: 'return price == 0' — same mistake, different literal type.",
+      "target_file": "src/discounts.py",
+      "patch": "variants/v05.patch"
+    },
+    {
+      "id": "v06",
+      "kind": "indirection",
+      "description": "Introduce a private helper '_floats_equal(a, b): return a == b' and call it — the bug is hidden one call-level deeper.",
+      "target_file": "src/discounts.py",
+      "patch": "variants/v06.patch"
+    }
+  ]
+}

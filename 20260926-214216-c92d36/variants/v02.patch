@@ -1,0 +1,12 @@
+diff --git a/src/refunds.py b/src/refunds.py
+new file mode 100644
+index 0000000..ceefcd9
+--- /dev/null
++++ b/src/refunds.py
+@@ -0,0 +1,6 @@
++"""Refund calculations."""
++
++
++def refund_matches(refunded: float, original: float) -> bool:
++    """Return True if the refund equals the original charge."""
++    return refunded == original

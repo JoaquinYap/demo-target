@@ -1,0 +1,19 @@
+diff --git a/src/discounts.py b/src/discounts.py
+index b88b59e..688cb48 100644
+--- a/src/discounts.py
++++ b/src/discounts.py
+@@ -2,9 +2,13 @@
+ import math
+ 
+ 
++def _floats_equal(a: float, b: float) -> bool:
++    return a == b
++
++
+ def discount_applied(original: float, discounted: float, expected_saving: float) -> bool:
+     """Return True if the saving equals the expected discount amount."""
+-    return math.isclose(original - discounted, expected_saving, rel_tol=1e-9)
++    return _floats_equal(original - discounted, expected_saving)
+ 
+ 
+ def is_free(price: float) -> bool:
