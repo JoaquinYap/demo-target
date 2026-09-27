@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c02",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c02_rate_limit_zero.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 3.12,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_zero_rate_limit_not_overridden_by_default ________________\n\n    def test_zero_rate_limit_not_overridden_by_default():\n        \"\"\"When rate_limit is explicitly 0 (block all), it must NOT be replaced by the default 100.\"\"\"\n        flags = {\"rate_limit\": 0}\n        result = get_rate_limit(flags, default=100)\n>       assert result == 0, f\"Expected 0 but got {result!r}\"\nE       AssertionError: Expected 0 but got 100\nE       assert 100 == 0\n\ntests\\antibody\\test_twin_c02_rate_limit_zero.py:9: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c02_rate_limit_zero.py::test_zero_rate_limit_not_overridden_by_default\n1 failed in 0.45s\n",
+    "recorded_at": "2026-09-27T02:10:03+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 4.83,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.20s\n",
+    "recorded_at": "2026-09-27T02:12:26+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace flags.get('rate_limit') or default with explicit None-check"
+}

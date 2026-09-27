@@ -1,0 +1,353 @@
+{
+  "run_id": "20260926-230641-4fdd23",
+  "title": "Falsy-value erasure: `value or default` silently replaces any valid falsy config value (0, False, empty string) with the default.",
+  "repo": "demo-target/antibody-demo",
+  "root_cause": {
+    "title": "Falsy-value erasure: `value or default` silently replaces any valid falsy config value (0, False, empty string) with the default.",
+    "pattern": "A config/settings lookup uses `value or default` (boolean short-circuit) instead of an explicit `None`-check, so legitimate falsy values such as 0, False, or '' are treated as absent and overwritten by the default."
+  },
+  "original": {
+    "file": "src/config_loader.py",
+    "line": 8
+  },
+  "twins": [
+    {
+      "id": "c01",
+      "file": "src/feature_flags.py",
+      "line": 10,
+      "status": "fixed",
+      "reasoning": "Identical pattern: flags.get(name) returns False when a flag is explicitly disabled, but `or default` replaces it with True (the default), inverting the explicit configuration."
+    },
+    {
+      "id": "c02",
+      "file": "src/feature_flags.py",
+      "line": 16,
+      "status": "fixed",
+      "reasoning": "rate_limit=0 (block all traffic) is a valid and meaningful value; `or default` would silently replace it with 100, defeating the intent."
+    },
+    {
+      "id": "c03",
+      "file": "src/env_helpers.py",
+      "line": 10,
+      "status": "fixed",
+      "reasoning": "PORT=0 is a valid OS value (kernel assigns a random port); `or default` replaces it with 8080, breaking the caller's intent."
+    },
+    {
+      "id": "c04",
+      "file": "src/env_helpers.py",
+      "line": 16,
+      "status": "fixed",
+      "reasoning": "WORKERS=0 means 'disabled'; `or default` silently returns 4 workers instead."
+    },
+    {
+      "id": "c05",
+      "file": "src/env_helpers.py",
+      "line": 22,
+      "status": "fixed",
+      "reasoning": "An empty string prefix \"\" means 'serve at root'; `or default` replaces it with '/api', misrouting all requests."
+    }
+  ],
+  "rounds": [
+    {
+      "round": 0,
+      "label": "Before Antibody",
+      "score": 1.0,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "indirection",
+          "description": "Value stored in a variable first, then `value or default` — same falsy erasure one line later.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "relocation",
+          "description": "Same `settings.get(key) or default` pattern introduced in a new settings module.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Result of a helper function `_lookup(d, key)` used as the left operand of `or default`.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "api_alias",
+          "description": "Key access via `dict[key]` in a try/except, then `value or default` — same erasure, different access API.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "syntax",
+          "description": "Reversed ternary `default if not value else value` — logically identical falsy check.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "relocation",
+          "description": "Same `.get(key) or default` pattern introduced in a new app_config module.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "label": "Round 1",
+      "score": 1.0,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "indirection",
+          "description": "Value stored in a variable first, then `value or default` — same falsy erasure one line later.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "relocation",
+          "description": "Same `settings.get(key) or default` pattern introduced in a new settings module.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Result of a helper function `_lookup(d, key)` used as the left operand of `or default`.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "api_alias",
+          "description": "Key access via `dict[key]` in a try/except, then `value or default` — same erasure, different access API.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "syntax",
+          "description": "Reversed ternary `default if not value else value` — logically identical falsy check.",
+          "status": "detected",
+          "detected_by": [
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "relocation",
+          "description": "Same `.get(key) or default` pattern introduced in a new app_config module.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "label": "Round 2",
+      "score": 1.0,
+      "variants": [
+        {
+          "id": "v01",
+          "kind": "indirection",
+          "description": "Value stored in a variable first, then `value or default` — same falsy erasure one line later.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v02",
+          "kind": "relocation",
+          "description": "Same `settings.get(key) or default` pattern introduced in a new settings module.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v03",
+          "kind": "indirection",
+          "description": "Result of a helper function `_lookup(d, key)` used as the left operand of `or default`.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v04",
+          "kind": "api_alias",
+          "description": "Key access via `dict[key]` in a try/except, then `value or default` — same erasure, different access API.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v05",
+          "kind": "syntax",
+          "description": "Reversed ternary `default if not value else value` — logically identical falsy check.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        },
+        {
+          "id": "v06",
+          "kind": "relocation",
+          "description": "Same `.get(key) or default` pattern introduced in a new app_config module.",
+          "status": "detected",
+          "detected_by": [
+            "rule",
+            "tests"
+          ]
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "t_min": 0.0,
+      "kind": "run_started",
+      "label": "Run started from fix_commit 03e0464"
+    },
+    {
+      "t_min": 2.07,
+      "kind": "twin_confirmed",
+      "label": "c01 confirmed with a failing test"
+    },
+    {
+      "t_min": 2.37,
+      "kind": "twin_confirmed",
+      "label": "c03 confirmed with a failing test"
+    },
+    {
+      "t_min": 2.68,
+      "kind": "twin_confirmed",
+      "label": "c04 confirmed with a failing test"
+    },
+    {
+      "t_min": 2.68,
+      "kind": "twin_confirmed",
+      "label": "c05 confirmed with a failing test"
+    },
+    {
+      "t_min": 2.93,
+      "kind": "twin_confirmed",
+      "label": "c01 confirmed with a failing test"
+    },
+    {
+      "t_min": 3.37,
+      "kind": "twin_confirmed",
+      "label": "c02 confirmed with a failing test"
+    },
+    {
+      "t_min": 3.63,
+      "kind": "twin_confirmed",
+      "label": "c03 confirmed with a failing test"
+    },
+    {
+      "t_min": 3.93,
+      "kind": "twin_confirmed",
+      "label": "c04 confirmed with a failing test"
+    },
+    {
+      "t_min": 4.32,
+      "kind": "twin_confirmed",
+      "label": "c05 confirmed with a failing test"
+    },
+    {
+      "t_min": 5.52,
+      "kind": "twin_fixed",
+      "label": "c01 fixed, test is green"
+    },
+    {
+      "t_min": 5.75,
+      "kind": "twin_fixed",
+      "label": "c02 fixed, test is green"
+    },
+    {
+      "t_min": 6.05,
+      "kind": "twin_fixed",
+      "label": "c03 fixed, test is green"
+    },
+    {
+      "t_min": 6.45,
+      "kind": "twin_fixed",
+      "label": "c04 fixed, test is green"
+    },
+    {
+      "t_min": 6.87,
+      "kind": "twin_fixed",
+      "label": "c05 fixed, test is green"
+    },
+    {
+      "t_min": 16.9,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 0% (0/0)"
+    },
+    {
+      "t_min": 28.33,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 100% (2/2)"
+    },
+    {
+      "t_min": 32.05,
+      "kind": "vaccine_round",
+      "label": "Round 0: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 33.95,
+      "kind": "vaccine_round",
+      "label": "Round 1: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 36.02,
+      "kind": "vaccine_round",
+      "label": "Round 2: immunity 100% (6/6)"
+    },
+    {
+      "t_min": 37.25,
+      "kind": "antibody_created",
+      "label": "Antibody 004-falsy-value-erasure-or-default created"
+    }
+  ],
+  "baseline": null,
+  "duration_minutes": 37.25
+}

@@ -1,0 +1,30 @@
+rules:
+  - id: falsy-value-erasure-or-default
+    pattern-either:
+      # Direct: dict.get(key) or default
+      - pattern: $DICT.get($KEY) or $DEFAULT
+      # Indirection: value = ...; return value or default
+      - pattern: |
+          $VALUE = $DICT.get($KEY)
+          ...
+          return $VALUE or $DEFAULT
+      # api_alias: try/except access then or default
+      - pattern: |
+          try:
+              $VALUE = $DICT[$KEY]
+          except KeyError:
+              $VALUE = None
+          return $VALUE or $DEFAULT
+      # Reversed ternary: default if not value else value
+      - pattern: $DEFAULT if not $VALUE else $VALUE
+    message: >
+      Falsy-value erasure: this pattern silently replaces any valid falsy config value
+      (0, False, "") with the default because Python's `or`/`not` cannot distinguish
+      "missing" from "falsy". Last time this erased timeout=0, rate_limit=0, debug=False,
+      PORT=0, WORKERS=0, and PREFIX="" (fixed in commit 03e0464).
+      Use `value if value is not None else default` instead.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: correctness
+      antibody: "20260926-230641-4fdd23"

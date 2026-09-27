@@ -1,0 +1,45 @@
+diff --git a/src/env_helpers.py b/src/env_helpers.py
+index 2be75ac..47185f6 100644
+--- a/src/env_helpers.py
++++ b/src/env_helpers.py
+@@ -1,20 +1,20 @@
+-"""Environment variable helpers."""
+-from typing import Any
+-
+-
+-def get_port(env: dict, default: int = 8080) -> int:
+-    """Return the PORT from env, falling back to default."""
+-    value = env.get("PORT")
+-    return value if value is not None else default
+-
+-
+-def get_workers(env: dict, default: int = 4) -> int:
+-    """Return the number of workers from env."""
+-    value = env.get("WORKERS")
+-    return value if value is not None else default
+-
+-
+-def get_prefix(env: dict, default: str = "/api") -> str:
+-    """Return the URL prefix from env."""
+-    value = env.get("PREFIX")
+-    return value if value is not None else default
++"""Environment variable helpers."""
++from typing import Any
++
++
++def get_port(env: dict, default: int = 8080) -> int:
++    """Return the PORT from env, falling back to default."""
++    value = env.get("PORT")
++    return value if value is not None else default
++
++
++def get_workers(env: dict, default: int = 4) -> int:
++    """Return the number of workers from env."""
++    value = env.get("WORKERS")
++    return value if value is not None else default
++
++
++def get_prefix(env: dict, default: str = "/api") -> str:
++    """Return the URL prefix from env."""
++    value = env.get("PREFIX")
++    return default if not value else value

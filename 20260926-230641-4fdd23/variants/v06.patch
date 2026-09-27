@@ -1,0 +1,12 @@
+diff --git a/src/app_config.py b/src/app_config.py
+new file mode 100644
+index 0000000..3e75995
+--- /dev/null
++++ b/src/app_config.py
+@@ -0,0 +1,6 @@
++"""Application-level configuration helpers."""
++
++
++def get_cache_ttl(config: dict, default: int = 300) -> int:
++    """Return the cache TTL from config."""
++    return config.get("cache_ttl") or default

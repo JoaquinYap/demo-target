@@ -1,0 +1,26 @@
+{
+  "run_id": "20260926-230641-4fdd23",
+  "source": {
+    "type": "fix_commit",
+    "ref": "03e0464",
+    "fix_commit": "03e0464294e66448dc44130a572bde912014f414",
+    "parent_commit": "fe16d2d3d82784aad86164658a687a73571cfd79",
+    "issue": null
+  },
+  "root_cause": {
+    "title": "Falsy-value erasure: `value or default` silently replaces any valid falsy config value (0, False, empty string) with the default.",
+    "pattern": "A config/settings lookup uses `value or default` (boolean short-circuit) instead of an explicit `None`-check, so legitimate falsy values such as 0, False, or '' are treated as absent and overwritten by the default.",
+    "why_it_breaks": "In Python, `0 or 30` evaluates to `30`, `False or False` evaluates to `False` (the default, not the set value), and `'' or 'x'` evaluates to `'x'`. Any caller that explicitly sets a falsy value in the config silently receives the default instead.",
+    "trigger_conditions": [
+      "A config key is present in the mapping with a falsy but meaningful value (e.g. timeout=0, max_retries=0, debug=False, feature_flag=False, prefix='')",
+      "The reader uses `config.get(key) or default` or `settings.get(key) or default` or the equivalent `x = d.get(k); return x or default`"
+    ],
+    "fix_strategy": "Replace `value or default` with an explicit None-guard: `value if value is not None else default`, or use `dict.get(key, default)` when the key is always expected to be absent rather than falsy.",
+    "language": "python"
+  },
+  "original_instance": {
+    "file": "src/config_loader.py",
+    "line": 8,
+    "snippet": "return config.get(\"timeout\") or default"
+  }
+}

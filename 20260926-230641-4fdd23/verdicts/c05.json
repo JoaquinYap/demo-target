@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c05",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c05_prefix_empty_string.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 5.47,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________________ test_empty_prefix_not_overridden_by_default _________________\n\n    def test_empty_prefix_not_overridden_by_default():\n        \"\"\"When PREFIX='' (serve at root), it must NOT be replaced by the default '/api'.\"\"\"\n        env = {\"PREFIX\": \"\"}\n        result = get_prefix(env, default=\"/api\")\n>       assert result == \"\", f\"Expected '' but got {result!r}\"\nE       AssertionError: Expected '' but got '/api'\nE       assert '/api' == ''\nE         \nE         + /api\n\ntests\\antibody\\test_twin_c05_prefix_empty_string.py:9: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c05_prefix_empty_string.py::test_empty_prefix_not_overridden_by_default\n1 failed in 1.29s\n",
+    "recorded_at": "2026-09-27T02:11:00+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 2.68,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.20s\n",
+    "recorded_at": "2026-09-27T02:13:33+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace env.get('PREFIX') or default with explicit None-check"
+}

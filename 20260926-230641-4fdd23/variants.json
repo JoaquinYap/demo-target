@@ -1,0 +1,47 @@
+{
+  "run_id": "20260926-230641-4fdd23",
+  "variants": [
+    {
+      "id": "v01",
+      "kind": "indirection",
+      "description": "Value stored in a variable first, then `value or default` — same falsy erasure one line later.",
+      "target_file": "src/env_helpers.py",
+      "patch": "variants/v01.patch"
+    },
+    {
+      "id": "v02",
+      "kind": "relocation",
+      "description": "Same `settings.get(key) or default` pattern introduced in a new settings module.",
+      "target_file": "src/settings.py",
+      "patch": "variants/v02.patch"
+    },
+    {
+      "id": "v03",
+      "kind": "indirection",
+      "description": "Result of a helper function `_lookup(d, key)` used as the left operand of `or default`.",
+      "target_file": "src/feature_flags.py",
+      "patch": "variants/v03.patch"
+    },
+    {
+      "id": "v04",
+      "kind": "api_alias",
+      "description": "Key access via `dict[key]` in a try/except, then `value or default` — same erasure, different access API.",
+      "target_file": "src/env_helpers.py",
+      "patch": "variants/v04.patch"
+    },
+    {
+      "id": "v05",
+      "kind": "syntax",
+      "description": "Reversed ternary `default if not value else value` — logically identical falsy check.",
+      "target_file": "src/env_helpers.py",
+      "patch": "variants/v05.patch"
+    },
+    {
+      "id": "v06",
+      "kind": "relocation",
+      "description": "Same `.get(key) or default` pattern introduced in a new app_config module.",
+      "target_file": "src/app_config.py",
+      "patch": "variants/v06.patch"
+    }
+  ]
+}

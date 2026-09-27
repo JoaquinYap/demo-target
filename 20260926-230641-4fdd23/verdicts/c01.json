@@ -1,0 +1,36 @@
+{
+  "candidate_id": "c01",
+  "status": "fixed",
+  "reason": "Test passes after the fix.",
+  "test": {
+    "file": "tests/antibody/test_twin_c01_feature_flag_false.py",
+    "node_id": null
+  },
+  "red": {
+    "exit_code": 1,
+    "passed": false,
+    "outcome": "failed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 1: tests ran and at least one failed",
+    "duration_s": 3.08,
+    "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____________ test_explicit_false_flag_not_overridden_by_default ______________\n\n    def test_explicit_false_flag_not_overridden_by_default():\n        \"\"\"When a flag is explicitly set to False, it must NOT be replaced by the default True.\"\"\"\n        flags = {\"my_feature\": False}\n        result = is_feature_enabled(flags, \"my_feature\", default=True)\n>       assert result is False, f\"Expected False but got {result!r}\"\nE       AssertionError: Expected False but got True\nE       assert True is False\n\ntests\\antibody\\test_twin_c01_feature_flag_false.py:9: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/antibody/test_twin_c01_feature_flag_false.py::test_explicit_false_flag_not_overridden_by_default\n1 failed in 0.67s\n",
+    "recorded_at": "2026-09-27T02:09:37+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "green": {
+    "exit_code": 0,
+    "passed": true,
+    "outcome": "passed",
+    "tests_run": null,
+    "tests_failed": null,
+    "evidence_from": "exit_code",
+    "detail": "exit 0: all tests passed",
+    "duration_s": 4.36,
+    "output_tail": ".                                                                        [100%]\n1 passed in 0.72s\n",
+    "recorded_at": "2026-09-27T02:12:12+00:00",
+    "recorded_by": "antibody-cli"
+  },
+  "fix_summary": "Replace flags.get(name) or default with explicit None-check"
+}

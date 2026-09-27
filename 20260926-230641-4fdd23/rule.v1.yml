@@ -1,0 +1,14 @@
+rules:
+  - id: falsy-value-erasure-or-default
+    patterns:
+      - pattern: $DICT.get($KEY) or $DEFAULT
+    message: >
+      `$DICT.get($KEY) or $DEFAULT` silently replaces any falsy-but-valid value
+      (0, False, "") with $DEFAULT. Last time this erased explicit config values
+      like timeout=0, rate_limit=0, and debug=False (fixed in commit 03e0464).
+      Use `value = $DICT.get($KEY); return value if value is not None else $DEFAULT`.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: correctness
+      antibody: "20260926-230641-4fdd23"

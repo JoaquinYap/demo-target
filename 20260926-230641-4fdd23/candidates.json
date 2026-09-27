@@ -1,0 +1,46 @@
+{
+  "run_id": "20260926-230641-4fdd23",
+  "search_notes": "Searched all .py files for `.get(...) or` and `or default` patterns; found 5 matching lines in src/feature_flags.py and src/env_helpers.py. All other source files have no `or default` pattern.",
+  "candidates": [
+    {
+      "id": "c01",
+      "file": "src/feature_flags.py",
+      "line": 10,
+      "snippet": "return flags.get(name) or default",
+      "reasoning": "Identical pattern: flags.get(name) returns False when a flag is explicitly disabled, but `or default` replaces it with True (the default), inverting the explicit configuration.",
+      "confidence": "high"
+    },
+    {
+      "id": "c02",
+      "file": "src/feature_flags.py",
+      "line": 16,
+      "snippet": "return flags.get(\"rate_limit\") or default",
+      "reasoning": "rate_limit=0 (block all traffic) is a valid and meaningful value; `or default` would silently replace it with 100, defeating the intent.",
+      "confidence": "high"
+    },
+    {
+      "id": "c03",
+      "file": "src/env_helpers.py",
+      "line": 10,
+      "snippet": "return env.get(\"PORT\") or default",
+      "reasoning": "PORT=0 is a valid OS value (kernel assigns a random port); `or default` replaces it with 8080, breaking the caller's intent.",
+      "confidence": "high"
+    },
+    {
+      "id": "c04",
+      "file": "src/env_helpers.py",
+      "line": 16,
+      "snippet": "return env.get(\"WORKERS\") or default",
+      "reasoning": "WORKERS=0 means 'disabled'; `or default` silently returns 4 workers instead.",
+      "confidence": "high"
+    },
+    {
+      "id": "c05",
+      "file": "src/env_helpers.py",
+      "line": 22,
+      "snippet": "return env.get(\"PREFIX\") or default",
+      "reasoning": "An empty string prefix \"\" means 'serve at root'; `or default` replaces it with '/api', misrouting all requests.",
+      "confidence": "high"
+    }
+  ]
+}

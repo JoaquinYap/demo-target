@@ -1,0 +1,41 @@
+diff --git a/src/feature_flags.py b/src/feature_flags.py
+index cf53696..4c01938 100644
+--- a/src/feature_flags.py
++++ b/src/feature_flags.py
+@@ -1,16 +1,20 @@
+-"""Feature flag management.
+-
+-BUG: using `value or default` — ignores valid falsy values.
+-"""
+-
+-
+-def is_feature_enabled(flags: dict, name: str, default: bool = True) -> bool:
+-    """Return whether a feature flag is enabled."""
+-    # BUG: if flags[name] is explicitly False, `or` returns default (True) — wrong!
+-    return flags.get(name) or default
+-
+-
+-def get_rate_limit(flags: dict, default: int = 100) -> int:
+-    """Return the rate limit from flags."""
+-    # BUG: rate_limit=0 (block all) would be ignored and replaced by 100
+-    return flags.get("rate_limit") or default
++"""Feature flag management.
++
++BUG: using `value or default` — ignores valid falsy values.
++"""
++
++
++def is_feature_enabled(flags: dict, name: str, default: bool = True) -> bool:
++    """Return whether a feature flag is enabled."""
++    # BUG: if flags[name] is explicitly False, `or` returns default (True) — wrong!
++    return flags.get(name) or default
++
++
++def get_rate_limit(flags: dict, default: int = 100) -> int:
++    """Return the rate limit from flags."""
++    # BUG: rate_limit=0 (block all) would be ignored and replaced by 100
++    return _lookup(flags, "rate_limit") or default
++
++
++def _lookup(d: dict, key: str):
++    return d.get(key)

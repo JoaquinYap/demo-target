@@ -1,0 +1,15 @@
+{
+  "max_candidates": 6,
+  "max_variants": 6,
+  "max_vaccine_rounds": 3,
+  "test_command": [
+    "{python}",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "test_timeout_s": 300,
+  "semgrep": "semgrep"
+}
