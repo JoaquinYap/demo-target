@@ -4,7 +4,7 @@ This module has the SAME BUG as tasks.py had before the fix:
 datetime.now() (naive) compared with a timezone-aware datetime argument.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def is_token_expired(valid_until: datetime) -> bool:
@@ -13,11 +13,9 @@ def is_token_expired(valid_until: datetime) -> bool:
     Args:
         valid_until: timezone-aware datetime of token expiry.
     """
-    # BUG: datetime.now() is naive; raises TypeError with aware valid_until
-    return valid_until < datetime.now()
+    return valid_until < datetime.now(timezone.utc)
 
 
 def token_ttl_seconds(valid_until: datetime) -> float:
     """Return seconds left before the token expires (negative if expired)."""
-    # BUG: same naive datetime mistake
-    return (valid_until - datetime.now()).total_seconds()
+    return (valid_until - datetime.now(timezone.utc)).total_seconds()
